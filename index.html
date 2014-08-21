@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Kendo UI: Media Player</title>
+
+    <link rel="stylesheet" href="http://cdn.kendostatic.com/2014.2.716/styles/kendo.flat.mobile.min.css" />
+</head>
+<body>
+
+    <section data-role="layout" data-id="default">
+        <header data-role="header">
+            <div data-role="navbar">
+                <a data-role="button" data-icon="sounds" data-align="left"
+                   data-click="kendo.mobile.application.options.modelScope.viewModel.onAudioLoadedClick"></a>
+                <span data-role="view-title"></span>
+                <a data-role="button" data-icon="organize" data-align="right"
+                   data-click="kendo.mobile.application.options.modelScope.viewModel.onVideoLoadedClick"></a>
+            </div>
+        </header>
+        <footer data-role="footer">
+            <div data-role="tabstrip">
+                <a data-icon="rewind" class="previous">Previous</a>
+                <a data-icon="pause" class="pause">Pause</a>
+                <a data-icon="play" class="play">Play</a>
+                <a data-icon="stop" class="stop">Stop</a>
+                <a data-icon="fastforward" class="next">Next</a>
+            </div>
+        </footer>
+    </section>
+
+    <div data-role="view" data-layout="default"
+        data-title="Kendo Media Player"
+        data-model="viewModel"
+        data-bind="events: { init: onViewInit, show: onViewShow }">
+
+        <div data-role="mediaplayer"
+             data-play-selector=".km-footer .play"
+             data-pause-selector=".km-footer .pause"
+             data-stop-selector=".km-footer .stop"
+             data-previous-selector=".km-footer .previous"
+             data-next-selector=".km-footer .next"
+             data-bind="source: mediaSource, ended: onMediaEnded, playlistended: onMediaPlaylistEnded, controls: enableControls, loop: enableLoop, loopAll: enableLoopAll, continuous: enableContinuous">
+        </div>
+
+        <ul data-role="listview" class="audio-options"
+            data-style="inset"
+            data-type="group">
+            <li>
+                Configuration
+                <ul>
+                    <li>Controls <input type="checkbox" class="controls" data-role="switch" data-bind="checked: enableControls"></li>
+                    <li>Loop <input type="checkbox" class="loop" data-role="switch" data-bind="checked: enableLoop"></li>
+                    <li>Loop All <input type="checkbox" class="loop-all" data-role="switch" data-bind="checked: enableLoopAll"></li>
+                    <li>Continuous <input type="checkbox" class="continuous" data-role="switch" data-bind="checked: enableContinuous"></li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+
+    <!-- JS -->
+    <script src="http://cdn.kendostatic.com/2014.2.716/js/jquery.min.js"></script>
+    <script src="http://cdn.kendostatic.com/2014.2.716/js/kendo.ui.core.min.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.14/require.min.js"></script>
+    <script>
+        //INITIALIZE APP
+        require([
+            'kendo.mediaplayer'
+        ], function() {
+
+            var viewModel = kendo.observable({
+                enableControls: true,
+                enableLoop: false,
+                enableLoopAll: false,
+                enableContinuous: true,
+                mediaSource: [],
+                videoSource: [
+                    {
+                        title: 'Wildlife',
+                        file: 'https://archive.org/download/Windows7WildlifeSampleVideo/Wildlife_512kb.mp4'
+                    },
+                    {
+                        title: 'Clematis',
+                        file: 'https://archive.org/download/CEP304/CEP304_512kb.mp4'
+                    }
+                ],
+                audioSource: [
+                    {
+                        title: 'Jungle River',
+                        file: 'https://ia600506.us.archive.org/17/items/Sounds_of_Nature_Collection/02_Jungle_River.mp3'
+                    },
+                    {
+                        title: 'Tropical Rain Forest',
+                        file: 'https://ia700506.us.archive.org/17/items/Sounds_of_Nature_Collection/04_A_Tropical_Rain_Forest.mp3'
+                    },
+                    {
+                        title: 'Thunder and River',
+                        file: 'https://ia600506.us.archive.org/17/items/Sounds_of_Nature_Collection/20_Thunder_And_Rain.mp3'
+                    },
+                    {
+                        file: 'https://ia600506.us.archive.org/17/items/Sounds_of_Nature_Collection/41_Ocean_Waves.mp3'
+                    },
+                    {
+                        title: 'Frog Chorus',
+                        file: 'https://ia700506.us.archive.org/17/items/Sounds_of_Nature_Collection/53_Frog_Chorus.mp3'
+                    }
+                ],
+                onViewInit: function (e) {
+                    //DEFAULT TO AUDIO SOURCE
+                    this.set('mediaSource', this.get('audioSource'));
+                },
+                onViewShow: function (e) {
+                    //CLEAR MEDIA CONTROLS ON FIRST LOAD
+                    this.clearMediaControls();
+                },
+                onMediaEnded: function() {
+                    console.log('Media ended!');
+                },
+                onMediaPlaylistEnded: function() {
+                    console.log('Playlist ended!');
+                },
+                onAudioLoadedClick: function () {
+                    var context = kendo.mobile.application.options.modelScope.viewModel;
+
+                    //CONVERT TO AUDIO SOURCE
+                    $('[data-role="mediaplayer"]').getKendoMediaPlayer().options.type = 'audio';
+                    context.set('mediaSource', context.get('audioSource'));
+                    context.clearMediaControls();
+                },
+                onVideoLoadedClick: function () {
+                    var context = kendo.mobile.application.options.modelScope.viewModel;
+
+                    //CONVERT TO VIDEO SOURCE
+                    $('[data-role="mediaplayer"]').getKendoMediaPlayer().options.type = 'video';
+                    context.set('mediaSource', context.get('videoSource'));
+                    context.clearMediaControls();
+                },
+                clearMediaControls: function () {
+                    kendo.widgetInstance($('.km-footer [data-role="tabstrip"]')).clear();
+                }
+            });
+
+            //INITIALIZE MOBILE APP
+            new kendo.mobile.Application(document.body, {
+                modelScope: {
+                    viewModel: viewModel
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>
