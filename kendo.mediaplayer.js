@@ -721,63 +721,56 @@ define([], function () {
 
     }));
 
-    kendo.data.binders.widget.controls = kendo.data.Binder.extend({
+    //CREATE BINDER NAMESPACE
+    kendo.data.binders.widget.mediaplayer = {};
+
+    kendo.data.binders.widget.mediaplayer.controls = kendo.data.Binder.extend({
         refresh: function () {
             var value = this.bindings.controls.get();
             var widget = this.element;
 
-            if (widget && widget.options.name == 'MediaPlayer') {
-                widget.toggleControls(value);
-            }
+            widget.toggleControls(value);
         }
     });
 
-    kendo.data.binders.widget.loop = kendo.data.Binder.extend({
+    kendo.data.binders.widget.mediaplayer.loop = kendo.data.Binder.extend({
         refresh: function () {
             var value = this.bindings.loop.get();
             var widget = this.element;
 
-            if (widget && widget.options.name == 'MediaPlayer') {
-                widget.toggleLoop(value);
-            }
+            widget.toggleLoop(value);
         }
     });
 
-    kendo.data.binders.widget.loopAll = kendo.data.Binder.extend({
+    kendo.data.binders.widget.mediaplayer.loopAll = kendo.data.Binder.extend({
         refresh: function () {
             var value = this.bindings.loopAll.get();
             var widget = this.element;
 
-            if (widget && widget.options.name == 'MediaPlayer') {
-                widget.toggleLoopAll(value);
-            }
+            widget.toggleLoopAll(value);
         }
     });
 
-    kendo.data.binders.widget.continuous = kendo.data.Binder.extend({
+    kendo.data.binders.widget.mediaplayer.continuous = kendo.data.Binder.extend({
         refresh: function () {
             var value = this.bindings.continuous.get();
             var widget = this.element;
 
-            if (widget && widget.options.name == 'MediaPlayer') {
-                widget.toggleContinuous(value);
-            }
+            widget.toggleContinuous(value);
         }
     });
 
-    kendo.data.binders.widget.playlistended = kendo.data.Binder.extend({
+    kendo.data.binders.widget.mediaplayer.playlistended = kendo.data.Binder.extend({
         init: function (widget, bindings, options) {
             var me = this;
 
             kendo.data.Binder.fn.init.call(this, widget, bindings, options);
 
             //HANDLE BINDING FOR MEDIA PLAYER
-            if (widget && widget.options.name == 'MediaPlayer') {
-                widget.bind(PLAYLISTENDED, function () {
-                    //EXECUTE CALLBACK OPTION
-                    me.bindings.playlistended.get();
-                });
-            }
+            widget.bind(PLAYLISTENDED, function () {
+                //EXECUTE CALLBACK OPTION
+                me.bindings.playlistended.get();
+            });
         },
 
         refresh: function () {}
@@ -793,31 +786,29 @@ define([], function () {
             kendo.data.Binder.fn.init.call(this, widget, bindings, options);
 
             //HANDLE BINDING FOR MEDIA PLAYER
-            if (widget && widget.options.name == 'MediaPlayer') {
-                widget._bindMedia(this.eventName, function () {
-                    me.bindings[me.eventName].get();
-                });
-            }
+            widget._bindMedia(this.eventName, function () {
+                me.bindings[me.eventName].get();
+            });
         },
 
         refresh: function () {}
     });
 
     //BIND MVVM MEDIA EVENTS
-    kendo.data.binders.widget.durationchange = MediaBinder.extend({ eventName: DURATIONCHANGE });
-    kendo.data.binders.widget.ended = MediaBinder.extend({ eventName: ENDED });
-    kendo.data.binders.widget.error = MediaBinder.extend({ eventName: ERROR });
-    kendo.data.binders.widget.loadeddata = MediaBinder.extend({ eventName: LOADEDDATA });
-    kendo.data.binders.widget.loadedmetadata = MediaBinder.extend({ eventName: LOADEDMETADATA });
-    kendo.data.binders.widget.loadstart = MediaBinder.extend({ eventName: LOADSTART });
-    kendo.data.binders.widget.pause = MediaBinder.extend({ eventName: PAUSE });
-    kendo.data.binders.widget.play = MediaBinder.extend({ eventName: PLAY });
-    kendo.data.binders.widget.playing = MediaBinder.extend({ eventName: PLAYING });
-    kendo.data.binders.widget.progress = MediaBinder.extend({ eventName: PROGRESS });
-    kendo.data.binders.widget.ratechange = MediaBinder.extend({ eventName: RATECHANGE });
-    kendo.data.binders.widget.seeked = MediaBinder.extend({ eventName: SEEKED });
-    kendo.data.binders.widget.seeking = MediaBinder.extend({ eventName: SEEKING });
-    kendo.data.binders.widget.timeupdate = MediaBinder.extend({ eventName: TIMEUPDATE });
-    kendo.data.binders.widget.volumechange = MediaBinder.extend({ eventName: VOLUMECHANGE });
+    kendo.data.binders.widget.mediaplayer.durationchange = MediaBinder.extend({ eventName: DURATIONCHANGE });
+    kendo.data.binders.widget.mediaplayer.ended = MediaBinder.extend({ eventName: ENDED });
+    kendo.data.binders.widget.mediaplayer.error = MediaBinder.extend({ eventName: ERROR });
+    kendo.data.binders.widget.mediaplayer.loadeddata = MediaBinder.extend({ eventName: LOADEDDATA });
+    kendo.data.binders.widget.mediaplayer.loadedmetadata = MediaBinder.extend({ eventName: LOADEDMETADATA });
+    kendo.data.binders.widget.mediaplayer.loadstart = MediaBinder.extend({ eventName: LOADSTART });
+    kendo.data.binders.widget.mediaplayer.pause = MediaBinder.extend({ eventName: PAUSE });
+    kendo.data.binders.widget.mediaplayer.play = MediaBinder.extend({ eventName: PLAY });
+    kendo.data.binders.widget.mediaplayer.playing = MediaBinder.extend({ eventName: PLAYING });
+    kendo.data.binders.widget.mediaplayer.progress = MediaBinder.extend({ eventName: PROGRESS });
+    kendo.data.binders.widget.mediaplayer.ratechange = MediaBinder.extend({ eventName: RATECHANGE });
+    kendo.data.binders.widget.mediaplayer.seeked = MediaBinder.extend({ eventName: SEEKED });
+    kendo.data.binders.widget.mediaplayer.seeking = MediaBinder.extend({ eventName: SEEKING });
+    kendo.data.binders.widget.mediaplayer.timeupdate = MediaBinder.extend({ eventName: TIMEUPDATE });
+    kendo.data.binders.widget.mediaplayer.volumechange = MediaBinder.extend({ eventName: VOLUMECHANGE });
 
 });
