@@ -721,68 +721,14 @@ define([], function () {
 
     }));
 
-    //CREATE BINDER NAMESPACE
-    kendo.data.binders.widget.mediaplayer = {};
-
-    kendo.data.binders.widget.mediaplayer.controls = kendo.data.Binder.extend({
-        refresh: function () {
-            var value = this.bindings.controls.get();
-            var widget = this.element;
-
-            widget.toggleControls(value);
-        }
-    });
-
-    kendo.data.binders.widget.mediaplayer.loop = kendo.data.Binder.extend({
-        refresh: function () {
-            var value = this.bindings.loop.get();
-            var widget = this.element;
-
-            widget.toggleLoop(value);
-        }
-    });
-
-    kendo.data.binders.widget.mediaplayer.loopAll = kendo.data.Binder.extend({
-        refresh: function () {
-            var value = this.bindings.loopAll.get();
-            var widget = this.element;
-
-            widget.toggleLoopAll(value);
-        }
-    });
-
-    kendo.data.binders.widget.mediaplayer.continuous = kendo.data.Binder.extend({
-        refresh: function () {
-            var value = this.bindings.continuous.get();
-            var widget = this.element;
-
-            widget.toggleContinuous(value);
-        }
-    });
-
-    kendo.data.binders.widget.mediaplayer.playlistended = kendo.data.Binder.extend({
-        init: function (widget, bindings, options) {
-            var me = this;
-
-            kendo.data.Binder.fn.init.call(this, widget, bindings, options);
-
-            //HANDLE BINDING FOR MEDIA PLAYER
-            widget.bind(PLAYLISTENDED, function () {
-                //EXECUTE CALLBACK OPTION
-                me.bindings.playlistended.get();
-            });
-        },
-
-        refresh: function () {}
-    });
-
-    //BASE BINDER FOR MVVM MEDIA EVENTS
+    //BASE BINDER FOR MVVM MEDIA ELEMENT EVENTS
     var MediaBinder = kendo.data.Binder.extend({
         eventName: null,
 
         init: function (widget, bindings, options) {
             var me = this;
 
+            //BASE CALL TO WIDGET INITIALIZATION
             kendo.data.Binder.fn.init.call(this, widget, bindings, options);
 
             //HANDLE BINDING FOR MEDIA PLAYER
@@ -794,21 +740,78 @@ define([], function () {
         refresh: function () {}
     });
 
-    //BIND MVVM MEDIA EVENTS
-    kendo.data.binders.widget.mediaplayer.durationchange = MediaBinder.extend({ eventName: DURATIONCHANGE });
-    kendo.data.binders.widget.mediaplayer.ended = MediaBinder.extend({ eventName: ENDED });
-    kendo.data.binders.widget.mediaplayer.error = MediaBinder.extend({ eventName: ERROR });
-    kendo.data.binders.widget.mediaplayer.loadeddata = MediaBinder.extend({ eventName: LOADEDDATA });
-    kendo.data.binders.widget.mediaplayer.loadedmetadata = MediaBinder.extend({ eventName: LOADEDMETADATA });
-    kendo.data.binders.widget.mediaplayer.loadstart = MediaBinder.extend({ eventName: LOADSTART });
-    kendo.data.binders.widget.mediaplayer.pause = MediaBinder.extend({ eventName: PAUSE });
-    kendo.data.binders.widget.mediaplayer.play = MediaBinder.extend({ eventName: PLAY });
-    kendo.data.binders.widget.mediaplayer.playing = MediaBinder.extend({ eventName: PLAYING });
-    kendo.data.binders.widget.mediaplayer.progress = MediaBinder.extend({ eventName: PROGRESS });
-    kendo.data.binders.widget.mediaplayer.ratechange = MediaBinder.extend({ eventName: RATECHANGE });
-    kendo.data.binders.widget.mediaplayer.seeked = MediaBinder.extend({ eventName: SEEKED });
-    kendo.data.binders.widget.mediaplayer.seeking = MediaBinder.extend({ eventName: SEEKING });
-    kendo.data.binders.widget.mediaplayer.timeupdate = MediaBinder.extend({ eventName: TIMEUPDATE });
-    kendo.data.binders.widget.mediaplayer.volumechange = MediaBinder.extend({ eventName: VOLUMECHANGE });
+    //CREATE WIDGET BINDERS
+    kendo.data.binders.widget.mediaplayer = {
+
+        controls: kendo.data.Binder.extend({
+            refresh: function () {
+                var value = this.bindings.controls.get();
+                var widget = this.element;
+
+                widget.toggleControls(value);
+            }
+        }),
+
+        loop: kendo.data.Binder.extend({
+            refresh: function () {
+                var value = this.bindings.loop.get();
+                var widget = this.element;
+
+                widget.toggleLoop(value);
+            }
+        }),
+
+        loopAll: kendo.data.Binder.extend({
+            refresh: function () {
+                var value = this.bindings.loopAll.get();
+                var widget = this.element;
+
+                widget.toggleLoopAll(value);
+            }
+        }),
+
+        continuous: kendo.data.Binder.extend({
+            refresh: function () {
+                var value = this.bindings.continuous.get();
+                var widget = this.element;
+
+                widget.toggleContinuous(value);
+            }
+        }),
+
+        playlistended: kendo.data.Binder.extend({
+            init: function (widget, bindings, options) {
+                var me = this;
+
+                kendo.data.Binder.fn.init.call(this, widget, bindings, options);
+
+                //HANDLE BINDING FOR MEDIA PLAYER
+                widget.bind(PLAYLISTENDED, function () {
+                    //EXECUTE CALLBACK OPTION
+                    me.bindings.playlistended.get();
+                });
+            },
+
+            refresh: function () {}
+        }),
+
+        //BIND MVVM MEDIA EVENTS
+        durationchange: MediaBinder.extend({ eventName: DURATIONCHANGE }),
+        ended: MediaBinder.extend({ eventName: ENDED }),
+        error: MediaBinder.extend({ eventName: ERROR }),
+        loadeddata: MediaBinder.extend({ eventName: LOADEDDATA }),
+        loadedmetadata: MediaBinder.extend({ eventName: LOADEDMETADATA }),
+        loadstart: MediaBinder.extend({ eventName: LOADSTART }),
+        pause: MediaBinder.extend({ eventName: PAUSE }),
+        play: MediaBinder.extend({ eventName: PLAY }),
+        playing: MediaBinder.extend({ eventName: PLAYING }),
+        progress: MediaBinder.extend({ eventName: PROGRESS }),
+        ratechange: MediaBinder.extend({ eventName: RATECHANGE }),
+        seeked: MediaBinder.extend({ eventName: SEEKED }),
+        seeking: MediaBinder.extend({ eventName: SEEKING }),
+        timeupdate: MediaBinder.extend({ eventName: TIMEUPDATE }),
+        volumechange: MediaBinder.extend({ eventName: VOLUMECHANGE })
+
+    };
 
 });
